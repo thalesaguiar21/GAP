@@ -30,8 +30,11 @@ int main()
 
 
 	gap->solve();
-	cout << "\nThe maximum profit for this instance is: ";
+	cout << "\nThe maximum profit for this instance is ";
 	cout << gap->getMaxProfit() <<endl;
+	cout << "The algorithm visited ";
+	cout << gap->getNumVisitedNodes();
+	cout << " nodes.\n";
 
 
 	delete aux;

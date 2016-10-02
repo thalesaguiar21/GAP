@@ -6,6 +6,7 @@
 
 
 GenAssign::GenAssign(){
+	visitedNodes = 0;
 	maxProfit = 0;
 	costs = readResource<int>(nAgts, nTasks);
 	profits = readCost<int>(nAgts, nTasks);
@@ -14,6 +15,13 @@ GenAssign::GenAssign(){
 
 	for(int i=0; i<nTasks; i++)
 		assign[i] = -1;
+
+	colMaximum = new int[nTasks];
+	for(int i=0; i<nTasks; i++){
+		colMaximum[i] = colLimit(i);
+		std::cout << colMaximum[i] << " ";
+	}
+	std::cout << "\n";
 }
 
 GenAssign::~GenAssign(){
@@ -28,6 +36,8 @@ GenAssign::~GenAssign(){
 	delete [] costs;
 
 	delete [] assign;
+
+	delete [] colMaximum;
 }
 
 void GenAssign::solve(){
@@ -41,6 +51,7 @@ void GenAssign::solve(int task){
 	int cProfit = 0;
 	for(int agt=0; agt<nAgts; agt++){
 		if(promising(agt, task)){
+			visitedNodes++;
 			assign[task] = agt;
 			if(task == nTasks){
 				cProfit = totalProfit();
@@ -63,13 +74,21 @@ void GenAssign::solve(int task){
 
 bool GenAssign::promising(int agt, int task){
 
+	bool isPromising = true;
+
 	if(actualCap(agt) + costs[agt][task] > capacity[agt]){
-		return false;
+		isPromising = false;
+	}
+	if(assign[task] != -1){
+		isPromising = false;;
+	}
+	if(task < nTasks){
+		if(totalProfit() + colMaximum[task] < maxProfit){
+			isPromising = false;
+		}	
 	}
 
-	if(assign[task] != -1){
-		return false;
-	}
+	return isPromising;
 }
 
 int GenAssign::actualCap(int agt){
@@ -86,8 +105,29 @@ int GenAssign::actualCap(int agt){
 int GenAssign::totalProfit(){
 
 	int total = 0;
-	for(int task=0; task<nTasks; task++)
-		total += profits[assign[task]][task];
+	for(int task=0; task<nTasks; task++){
+		if(assign[task] != -1){
+			total += profits[assign[task]][task];
+		}
+	}
+	return total;
+}
+
+int GenAssign::colLimit(int strtTask){
+
+	int maximum = 0;
+	int total = 0;
+	for(int task=strtTask; task<nTasks; task++){
+		maximum = profits[0][task];
+		for(int agt=1; agt<nAgts; agt++){
+			if(profits[agt][task] > maximum){
+				maximum = profits[agt][task];
+			}
+		}
+		total += maximum;
+	}
+	// std::cout << "Column limit from task " << strtTask <<": ";
+	// std::cout << total << std::endl;
 	return total;
 }
 
@@ -123,4 +163,8 @@ int GenAssign::getNumTasks(){
 
 int GenAssign::getMaxProfit(){
 	return this->maxProfit;
+}
+
+int GenAssign::getNumVisitedNodes(){
+	return this->visitedNodes;
 }
