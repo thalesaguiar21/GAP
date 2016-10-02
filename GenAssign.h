@@ -14,12 +14,14 @@ private:
 	int *capacity;
 	int *assign;
 	int *colMaximum;
+	int *colMinimum;
 
 	void solve(int index);
 	bool promising(int agt, int task);
 	int actualCap(int agt);
 	int totalProfit();
 	int colLimit(int strtTask);
+	int colMin(int strtTask);
 
 public:
 

@@ -16,12 +16,22 @@ GenAssign::GenAssign(){
 	for(int i=0; i<nTasks; i++)
 		assign[i] = -1;
 
+	for(int i=0; i<nTasks; i++)
+		assign[i] = -1;
+
 	colMaximum = new int[nTasks];
 	for(int i=0; i<nTasks; i++){
 		colMaximum[i] = colLimit(i);
-		std::cout << colMaximum[i] << " ";
 	}
-	std::cout << "\n";
+
+	colMinimum = new int[nTasks];
+	for(int i=0; i<nTasks; i++){
+		colMinimum[i] = colMin(i);
+	}
+
+	maxProfit=colMinimum[0];
+	std::cout << "\nStarting with a maximum of ";
+	std::cout << maxProfit << std::endl;
 }
 
 GenAssign::~GenAssign(){
@@ -38,6 +48,8 @@ GenAssign::~GenAssign(){
 	delete [] assign;
 
 	delete [] colMaximum;
+
+	delete [] colMinimum;
 }
 
 void GenAssign::solve(){
@@ -50,6 +62,7 @@ void GenAssign::solve(int task){
 	
 	int cProfit = 0;
 	for(int agt=0; agt<nAgts; agt++){
+
 		if(promising(agt, task)){
 			visitedNodes++;
 			assign[task] = agt;
@@ -57,7 +70,7 @@ void GenAssign::solve(int task){
 				cProfit = totalProfit();
 				if(cProfit > maxProfit){
 					maxProfit = cProfit; 
-					std::cout << "New maximum: ";
+					std::cout << "\nNew maximum: ";
 					std::cout << maxProfit<<std::endl;
 					std::cout << "Assignments: ";
 					showAssign();
@@ -80,7 +93,7 @@ bool GenAssign::promising(int agt, int task){
 		isPromising = false;
 	}
 	if(assign[task] != -1){
-		isPromising = false;;
+		isPromising = false;
 	}
 	if(task < nTasks){
 		if(totalProfit() + colMaximum[task] < maxProfit){
@@ -126,9 +139,23 @@ int GenAssign::colLimit(int strtTask){
 		}
 		total += maximum;
 	}
-	// std::cout << "Column limit from task " << strtTask <<": ";
-	// std::cout << total << std::endl;
 	return total;
+}
+
+int GenAssign::colMin(int strtTask){
+
+	int minimum = 0;
+	int total = 0;
+	for(int task=strtTask; task<nTasks; task++){
+		minimum = profits[0][task];
+		for(int agt=1; agt<nAgts; agt++){
+			if(profits[agt][task] < minimum){
+				minimum = profits[agt][task];
+			}
+		}
+		total += minimum;
+	}
+	return  total;
 }
 
 void GenAssign::showAssign(){
