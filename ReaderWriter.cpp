@@ -11,12 +11,11 @@ using std::endl;
 using std::ofstream;
 using std::ifstream;
 
-
 template<typename T> void printMat(T **matriz, int linha, int coluna){
 
 	for(int i=0; i<linha; i++){
 		for(int j=0; j<coluna; j++){
-			cout << matriz[i][j] << std::setw(8);
+			cout << matriz[i][j] << std::setw(3) << std::setfill(' ');
 		}
 		cout << "\n";
 	}
@@ -27,8 +26,10 @@ template void printMat<double>(double **matriz, int linha, int coluna);
 
 
 template<typename T> T** readCost(int &linha, int &coluna){
+
+	//cout << constants::const1() << endl;
 	
-	cout << "Lendo instância dos custos...\n";
+	cout << "Lendo os custos...\n";
 	T **matriz;
 	ifstream myFile("gap1-1.txt");
 	myFile >> linha; 
@@ -58,7 +59,7 @@ template<typename T> T** readResource(int &linha, int &coluna){
 	T dunkey;
 
 	ifstream myFile("gap1-1.txt");
-	cout << "Lendo instância dos custos...\n";
+	cout << "Lendo os recursos...\n";
 	myFile >> linha; 
 	myFile >> coluna;
 
@@ -77,7 +78,7 @@ template<typename T> T** readResource(int &linha, int &coluna){
 		}
 	}
 
-	cout << "A leitura dos custos foi finalizada com sucesso...\n";
+	cout << "A leitura dos recursos foi finalizada com sucesso...\n";
 
 	myFile.close();
 
@@ -93,7 +94,7 @@ template<typename T> T* readAgentsCap(int &linha, int &coluna){
 	T dunkey;
 
 	ifstream myFile("gap1-1.txt");
-	cout << "Lendo instância dos custos...\n";
+	cout << "Lendo as capacidades dos agentes...\n";
 	myFile >> linha; 
 	myFile >> coluna;
 
@@ -116,7 +117,7 @@ template<typename T> T* readAgentsCap(int &linha, int &coluna){
 		myFile >>array[i];
 	}
 
-	cout << "A leitura dos custos foi finalizada com sucesso...\n";
+	cout << "A leitura das capacidades foi finalizada com sucesso...\n";
 
 	myFile.close();
 

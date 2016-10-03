@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sys/time.h>
 #include "ReaderWriter.h"
 #include "Functions.h"
 #include "GenAssign.h"
@@ -11,6 +12,8 @@ using std::endl;
 int main()
 {
 	GenAssign *gap = new GenAssign();
+	struct timeval inicio, final;
+    int tmili;
 
 	cout << "Number of agents: " << gap->getNumAgts() <<endl;
 	cout << "Number of tasks: " << gap->getNumTasks() <<endl;
@@ -28,8 +31,12 @@ int main()
 	}
 	cout << endl;
 
-
+	gettimeofday(&inicio, NULL);
 	gap->solve();
+    gettimeofday(&final, NULL);
+    tmili = (int) (1000 * (final.tv_sec - inicio.tv_sec) + (final.tv_usec - inicio.tv_usec) / 1000);
+
+    cout << "Tempo decorrido: " << tmili << endl; 
 	cout << "\nThe maximum profit for this instance is ";
 	cout << gap->getMaxProfit() <<endl;
 	cout << "The algorithm visited ";

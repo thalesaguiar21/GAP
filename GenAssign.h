@@ -1,6 +1,8 @@
 #ifndef GEN_ASSIGN_H
 #define GEN_ASSIGN_H
 
+#include <queue>
+
 class GenAssign
 {
 private:
@@ -14,7 +16,6 @@ private:
 	int *capacity;
 	int *assign;
 	int *colMaximum;
-	int *colMinimum;
 
 	void solve(int index);
 	bool promising(int agt, int task);
@@ -22,6 +23,7 @@ private:
 	int totalProfit();
 	int colLimit(int strtTask);
 	int colMin(int strtTask);
+	std::queue<int> orderOfAcces(int task);
 
 public:
 

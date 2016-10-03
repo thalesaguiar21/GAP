@@ -3,9 +3,12 @@
 #include "Functions.h"
 #include <iostream>
 #include <iomanip>
+#include <queue>
+#include <list>
 
 
 GenAssign::GenAssign(){
+
 	visitedNodes = 0;
 	maxProfit = 0;
 	costs = readResource<int>(nAgts, nTasks);
@@ -19,19 +22,12 @@ GenAssign::GenAssign(){
 	for(int i=0; i<nTasks; i++)
 		assign[i] = -1;
 
+	std::cout << "\n\n\n";
+
 	colMaximum = new int[nTasks];
 	for(int i=0; i<nTasks; i++){
 		colMaximum[i] = colLimit(i);
 	}
-
-	colMinimum = new int[nTasks];
-	for(int i=0; i<nTasks; i++){
-		colMinimum[i] = colMin(i);
-	}
-
-	maxProfit=colMinimum[0];
-	std::cout << "\nStarting with a maximum of ";
-	std::cout << maxProfit << std::endl;
 }
 
 GenAssign::~GenAssign(){
@@ -48,8 +44,6 @@ GenAssign::~GenAssign(){
 	delete [] assign;
 
 	delete [] colMaximum;
-
-	delete [] colMinimum;
 }
 
 void GenAssign::solve(){
@@ -61,20 +55,19 @@ void GenAssign::solve(){
 void GenAssign::solve(int task){
 	
 	int cProfit = 0;
-	for(int agt=0; agt<nAgts; agt++){
+	int agt;
+	std::queue<int> order = orderOfAcces(task);
 
+	while(!order.empty()){
+		agt = order.front();
+		order.pop();
 		if(promising(agt, task)){
 			visitedNodes++;
 			assign[task] = agt;
 			if(task == nTasks){
 				cProfit = totalProfit();
 				if(cProfit > maxProfit){
-					maxProfit = cProfit; 
-					std::cout << "\nNew maximum: ";
-					std::cout << maxProfit<<std::endl;
-					std::cout << "Assignments: ";
-					showAssign();
-					std::cout << "\n";
+					maxProfit = cProfit;
 				}
 			}else
 				solve(task+1);
@@ -83,8 +76,6 @@ void GenAssign::solve(int task){
 	}
 }
 
-
-
 bool GenAssign::promising(int agt, int task){
 
 	bool isPromising = true;
@@ -92,10 +83,10 @@ bool GenAssign::promising(int agt, int task){
 	if(actualCap(agt) + costs[agt][task] > capacity[agt]){
 		isPromising = false;
 	}
-	if(assign[task] != -1){
+	if(isPromising && (assign[task] != -1)){
 		isPromising = false;
 	}
-	if(task < nTasks){
+	if(isPromising && (task < nTasks)){
 		if(totalProfit() + colMaximum[task] < maxProfit){
 			isPromising = false;
 		}	
@@ -140,6 +131,36 @@ int GenAssign::colLimit(int strtTask){
 		total += maximum;
 	}
 	return total;
+}
+
+std::queue<int> GenAssign::orderOfAcces(int task){
+	std::queue<int> orderQ;
+	int order[nAgts] = {0};
+	int prof[nAgts] = {0};
+
+	// Initialize the arrays
+	for(int agt=0; agt<nAgts; agt++){
+		order[agt] = agt;
+		prof[agt] = profits[agt][task];
+	}
+	for(int i=0; i<nAgts; i++){
+		for(int j=i+1; j<nAgts; j++){
+			if(prof[j] > prof[i]){
+				int aux = order[i];
+				order[i] = order[j];
+				order[j] = aux;
+				aux = prof[i];
+				prof[i] = prof[j];
+				prof[j] = aux;
+			}
+		}
+	}
+
+	for(int i=0; i<nAgts; i++){
+		orderQ.push(order[i]);
+	}
+
+	return orderQ;
 }
 
 int GenAssign::colMin(int strtTask){
