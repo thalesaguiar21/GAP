@@ -38,7 +38,7 @@ int main()
 
     cout << "Tempo decorrido: " << tmili << endl; 
 	cout << "\nThe maximum profit for this instance is ";
-	cout << gap->getMaxProfit() <<endl;
+	cout << gap->getMaxProfit() << endl;
 	cout << "The algorithm visited ";
 	cout << gap->getNumVisitedNodes();
 	cout << " nodes.\n";

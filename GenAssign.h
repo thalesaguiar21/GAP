@@ -1,6 +1,27 @@
 #ifndef GEN_ASSIGN_H
 #define GEN_ASSIGN_H
 
+/********************************************************************************
+*																				*
+*	Classe criada para representar o Problema de Alocação Generalizada(GAP).	*
+*	Proposto como trabalho para obtenção de nota parcial na disciplina de 		*
+*	Algoritmos Avançados(DIM0406).												*
+*																				*
+*	Esse problema consiste em dados um conjunto de agentes que possuem uma c 	*
+*	apacidade máxima, um conjunto de tarefas, um conjunto de custos de aloca 	*
+*	ção e a quantidade de recursos consumidos fazer uma alocação tal que cad 	*
+*	a tarefa seja designada a exatamente um agente de forma que a soma dos c 	*
+*	ustos de alocação não exceda a capacidade máxima de cada agente e que o  	*
+*	recurso total gasto seja máximo. 											*
+*																				*
+*	Instruções para execuçãopodem ser encontradas no README.md 					*
+*																				*
+*																				*
+*	AUTHOR:	Thales Aguiar de Lima												*
+*	DATE:	05 of October 2016													*
+*																				*
+*********************************************************************************/
+
 #include <queue>
 
 class GenAssign

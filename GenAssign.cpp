@@ -1,10 +1,8 @@
 #include "GenAssign.h"
 #include "ReaderWriter.h"
-#include "Functions.h"
 #include <iostream>
 #include <iomanip>
 #include <queue>
-#include <list>
 
 
 GenAssign::GenAssign(){
@@ -16,11 +14,9 @@ GenAssign::GenAssign(){
 	capacity = readAgentsCap<int>(nAgts, nTasks);
 	assign = new int[nTasks];
 
-	for(int i=0; i<nTasks; i++)
+	for(int i=0; i<nTasks; i++){
 		assign[i] = -1;
-
-	for(int i=0; i<nTasks; i++)
-		assign[i] = -1;
+	}
 
 	std::cout << "\n\n\n";
 
@@ -39,6 +35,7 @@ GenAssign::~GenAssign(){
 	for(int i=0; i < nAgts; i++){
 		delete [] costs[i];
 	}
+
 	delete [] costs;
 
 	delete [] assign;
@@ -50,7 +47,6 @@ void GenAssign::solve(){
 	std::cout << "\nSolving the actual instance of GAP...\n";
 	solve(0);
 }
-
 
 void GenAssign::solve(int task){
 	
@@ -68,6 +64,9 @@ void GenAssign::solve(int task){
 				cProfit = totalProfit();
 				if(cProfit > maxProfit){
 					maxProfit = cProfit;
+					std::cout << "\nFound a solution: ";
+					showAssign();
+					std::cout << "\n";
 				}
 			}else
 				solve(task+1);
