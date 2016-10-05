@@ -134,8 +134,8 @@ int GenAssign::colLimit(int strtTask){
 
 std::queue<int> GenAssign::orderOfAcces(int task){
 	std::queue<int> orderQ;
-	int order[nAgts] = {0};
-	int prof[nAgts] = {0};
+	int order[nAgts];
+	int prof[nAgts];
 
 	for(int agt=0; agt<nAgts; agt++){
 		order[agt] = agt;
