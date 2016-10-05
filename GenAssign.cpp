@@ -74,7 +74,6 @@ void GenAssign::solve(int task){
 		}
 		assign[task] = -1;
 	}
-	delete order;
 }
 
 bool GenAssign::promising(int agt, int task){

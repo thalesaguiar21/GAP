@@ -89,16 +89,38 @@ private:
 	
 	/*
 		Verifica a ordem de acesso dos agentes em ordem decres
-		cente dos recursos, ou '**profit' para uma tarefa 'task'
+		cente dos custos benefícios('profit[i][j]/costs[i][j]')
+		para juma tarefa 'task'
 
-		
+		INPUT:	Tarefa para a qual será calculada a ordem dos a
+				gentes.
+		OUTPUT:	Um fila contendo a ordem de acesso dos agentes.
 	*/
 	std::queue<int> orderOfAcces(int task);
 
 public:
 
+	/*
+		Cria um novo objeto GenAssign. Inicializa a instância c
+		om a leitura do arquivo descrito em 'ReaderWriter.cpp'.
+		Nenhum erro será lançado caso não seja possível ler o a
+		rquivo, entretanto será lançado um erro de segmentação 
+		ao tentar resolver o problema com o método 'solve()'.
+		
+		INPUT:	None
+		OUTPUT:	Uma nova instância de GenAssign.
+	*/
 	GenAssign();
+
+	/*
+		Destrutor da classe GenAssign, responsável por fazer a
+		desalocação de memória.
+
+		INPUT:	None
+		OUTPUT:	None
+	*/
 	~GenAssign();
+
 	int** getCosts();
 	int** getProfits();
 	int* getCapacity();
@@ -107,6 +129,10 @@ public:
 	int getMaxProfit();
 	int getNumVisitedNodes();
 	void solve();
+
+	/*
+		Exibe a alocação atual dos agentes/tarefas
+	*/
 	void showAssign();
 
 };

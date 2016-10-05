@@ -2,6 +2,7 @@
 #define READERWRITER_H
 
 
+
 template<typename T>
 extern void printMat(T **matriz, int linha, int coluna);
 

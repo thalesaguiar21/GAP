@@ -29,7 +29,7 @@ template<typename T> T** readCost(int &linha, int &coluna){
 	
 	cout << "Lendo os custos...\n";
 	T **matriz;
-	ifstream myFile("gap2-4.txt");		// Change this string to read another instace
+	ifstream myFile("gap2-1.txt");		// Change this string to read another instace
 	myFile >> linha; 
 	myFile >> coluna;
 
@@ -56,7 +56,7 @@ template<typename T> T** readResource(int &linha, int &coluna){
 	T **matriz;
 	T dunkey;
 
-	ifstream myFile("gap2-4.txt");		// Change this string to read another instace
+	ifstream myFile("gap2-1.txt");		// Change this string to read another instace
 	cout << "Lendo os recursos...\n";
 	myFile >> linha; 
 	myFile >> coluna;
@@ -91,7 +91,7 @@ template<typename T> T* readAgentsCap(int &linha, int &coluna){
 	T *array;
 	T dunkey;
 
-	ifstream myFile("gap2-4.txt");		// Change this string to read another instace	
+	ifstream myFile("gap2-1.txt");		// Change this string to read another instace	
 	cout << "Lendo as capacidades dos agentes...\n";
 	myFile >> linha; 
 	myFile >> coluna;
