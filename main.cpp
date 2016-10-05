@@ -1,7 +1,6 @@
 #include <iostream>
 #include <sys/time.h>
 #include "ReaderWriter.h"
-#include "Functions.h"
 #include "GenAssign.h"
 
 using std::cin;
