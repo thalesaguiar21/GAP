@@ -15,7 +15,7 @@ template<typename T> void printMat(T **matriz, int linha, int coluna){
 
 	for(int i=0; i<linha; i++){
 		for(int j=0; j<coluna; j++){
-			cout << matriz[i][j] << std::setw(3) << std::setfill(' ');
+			cout << matriz[i][j] << std::setw(3);
 		}
 		cout << "\n";
 	}
@@ -26,12 +26,10 @@ template void printMat<double>(double **matriz, int linha, int coluna);
 
 
 template<typename T> T** readCost(int &linha, int &coluna){
-
-	//cout << constants::const1() << endl;
 	
 	cout << "Lendo os custos...\n";
 	T **matriz;
-	ifstream myFile("gap1-1.txt");
+	ifstream myFile("gap2-4.txt");		// Change this string to read another instace
 	myFile >> linha; 
 	myFile >> coluna;
 
@@ -58,7 +56,7 @@ template<typename T> T** readResource(int &linha, int &coluna){
 	T **matriz;
 	T dunkey;
 
-	ifstream myFile("gap1-1.txt");
+	ifstream myFile("gap2-4.txt");		// Change this string to read another instace
 	cout << "Lendo os recursos...\n";
 	myFile >> linha; 
 	myFile >> coluna;
@@ -93,7 +91,7 @@ template<typename T> T* readAgentsCap(int &linha, int &coluna){
 	T *array;
 	T dunkey;
 
-	ifstream myFile("gap1-1.txt");
+	ifstream myFile("gap2-4.txt");		// Change this string to read another instace	
 	cout << "Lendo as capacidades dos agentes...\n";
 	myFile >> linha; 
 	myFile >> coluna;

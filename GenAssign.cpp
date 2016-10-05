@@ -74,6 +74,7 @@ void GenAssign::solve(int task){
 		}
 		assign[task] = -1;
 	}
+	delete order;
 }
 
 bool GenAssign::promising(int agt, int task){
@@ -138,11 +139,11 @@ std::queue<int> GenAssign::orderOfAcces(int task){
 	int order[nAgts] = {0};
 	int prof[nAgts] = {0};
 
-	// Initialize the arrays
 	for(int agt=0; agt<nAgts; agt++){
 		order[agt] = agt;
-		prof[agt] = profits[agt][task];
+		prof[agt] = profits[agt][task] /(float)costs[agt][task];
 	}
+
 	for(int i=0; i<nAgts; i++){
 		for(int j=i+1; j<nAgts; j++){
 			if(prof[j] > prof[i]){
