@@ -119,6 +119,16 @@ private:
 	*/
 	std::queue<int> orderOfAcces(int task);
 
+	/*
+        Lê os dados contido no arquivo denome "fileName" e inic
+        ializa os atributos do problema.
+
+        INPUT:   Nome do arquivo que contém a instância.
+        OUTPUT:  None
+
+	*/
+	void readInstance(const char *fileName);
+
 public:
 
 	/*
@@ -128,10 +138,10 @@ public:
 		rquivo, entretanto será lançado um erro de segmentação 
 		ao tentar resolver o problema com o método 'solve()'.
 		
-		INPUT:	None
+		INPUT:	Nome do arquivo com instância do problema.
 		OUTPUT:	Uma nova instância de GenAssign.
 	*/
-	GenAssign();
+	GenAssign(const char *fileName);
 
 	/*
 		Destrutor da classe GenAssign, responsável por fazer a

@@ -3,22 +3,19 @@
 #include <iostream>
 #include <iomanip>
 #include <queue>
+#include <cstdlib>
 
 
-GenAssign::GenAssign(){
+GenAssign::GenAssign(const char *fileName){
 
 	visitedNodes = 0;
 	maxProfit = 0;
-	costs = readResource<int>(nAgts, nTasks);
-	profits = readCost<int>(nAgts, nTasks);
-	capacity = readAgentsCap<int>(nAgts, nTasks);
+	readInstance(fileName);
 	assign = new int[nTasks];
 
 	for(int i=0; i<nTasks; i++){
 		assign[i] = -1;
 	}
-
-	std::cout << "\n\n\n";
 
 	colMaximum = new int[nTasks];
 	for(int i=0; i<nTasks; i++){
@@ -43,8 +40,19 @@ GenAssign::~GenAssign(){
 	delete [] colMaximum;
 }
 
+void GenAssign::readInstance(const char *fileName){
+	costs = readResource<int>(fileName, nAgts, nTasks);
+	profits = readCost<int>(fileName, nAgts, nTasks);
+	capacity = readAgentsCap<int>(fileName, nAgts, nTasks);
+	if(!costs || !profits || !capacity){
+		std::cerr << "Error reading the file!\n";
+		delete this;
+		exit(1);
+	}
+}
+
 void GenAssign::solve(){
-	std::cout << "\nSolving the actual instance of GAP...\n";
+	std::cout << "\nSolving the given instance of GAP...\n";
 	solve(0);
 }
 
@@ -64,9 +72,6 @@ void GenAssign::solve(int task){
 				cProfit = totalProfit();
 				if(cProfit > maxProfit){
 					maxProfit = cProfit;
-					std::cout << "\nFound a solution: ";
-					showAssign();
-					std::cout << "\n";
 				}
 			}else
 				solve(task+1);

@@ -10,9 +10,13 @@ using std::endl;
 
 int main()
 {
-	GenAssign *gap = new GenAssign();
 	struct timeval inicio, final;
     int tmili;
+    std::string userInput;
+
+    cout << "Type in the name of the to read: ";
+    cin >> userInput;
+    GenAssign *gap = new GenAssign(userInput.c_str());
 
 	cout << "Number of agents: " << gap->getNumAgts() <<endl;
 	cout << "Number of tasks: " << gap->getNumTasks() <<endl;
@@ -35,7 +39,7 @@ int main()
     gettimeofday(&final, NULL);
     tmili = (int) (1000 * (final.tv_sec - inicio.tv_sec) + (final.tv_usec - inicio.tv_usec) / 1000);
 
-    cout << "Tempo decorrido: " << tmili << endl; 
+    cout << "Execution time: " << tmili << endl; 
 	cout << "\nThe maximum profit for this instance is ";
 	cout << gap->getMaxProfit() << endl;
 	cout << "The algorithm visited ";

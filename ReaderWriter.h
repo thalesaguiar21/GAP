@@ -1,6 +1,7 @@
 #ifndef READERWRITER_H
 #define READERWRITER_H
 
+#include <string>
 
 /************************************************************
 *															*
@@ -35,21 +36,21 @@ extern void printMat(T **matriz, int linha, int coluna);
 	do problema em 'linha' e 'coluna'.
 */
 template<typename T> 
-extern T** readCost(int &linha, int &coluna);
+extern T** readCost(const char *fileName, int &linha, int &coluna);
 
 /*
 	Lê a matriz de recursos do arquivo e armazena o tamanh
 	o, do problema em 'linha' e 'coluna'.
 */
 template<typename T> 
-extern T** readResource(int &linha, int &coluna);
+extern T** readResource(const char *fileName, int &linha, int &coluna);
 
 /*
 	Lê a lista de capacidades do arquivo e armazena o taman
 	ho, do problema em 'linha' e 'coluna'.
 */
 template<typename T>
-extern T* readAgentsCap(int &linha, int &coluna);
+extern T* readAgentsCap(const char *fileName, int &linha, int &coluna);
 
 
 #endif

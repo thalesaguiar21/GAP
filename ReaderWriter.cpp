@@ -1,4 +1,5 @@
 #include "ReaderWriter.h"
+#include <cstdlib>
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -24,12 +25,17 @@ template<typename T> void printMat(T **matriz, int linha, int coluna){
 template void printMat<int>(int **matriz, int linha, int coluna);
 template void printMat<double>(double **matriz, int linha, int coluna);
 
-
-template<typename T> T** readCost(int &linha, int &coluna){
 	
-	cout << "Lendo os custos...\n";
+template<typename T> T** readCost(const char *fileName, int &linha, int &coluna){
+	
+	//cout << "Lendo o arquivo " << fileName << endl;
 	T **matriz;
-	ifstream myFile("gap2-3.txt");		// Change this string to read another instace
+	ifstream myFile(fileName);		// Change this string to read another instace
+
+	if(!myFile){
+		return NULL;
+	}
+
 	myFile >> linha; 
 	myFile >> coluna;
 
@@ -41,30 +47,34 @@ template<typename T> T** readCost(int &linha, int &coluna){
 		}
 	}
 
-	cout << "A leitura dos custos foi finalizada com sucesso...\n";
+	//cout << "A leitura dos custos foi finalizada com sucesso...\n";
 
 	myFile.close();
 
 	return matriz;
 }
-template int** readCost<int>(int &linha, int &coluna);
-template double** readCost<double>(int &linha, int &coluna);
+template int** readCost<int>(const char *fileName, int &linha, int &coluna);
+template double** readCost<double>(const char *fileName, int &linha, int &coluna);
 
 
-template<typename T> T** readResource(int &linha, int &coluna){
+template<typename T> T** readResource(const char *fileName, int &linha, int &coluna){
 	
 	T **matriz;
-	T dunkey;
+	T dummy;
 
-	ifstream myFile("gap2-3.txt");		// Change this string to read another instace
-	cout << "Lendo os recursos...\n";
+	ifstream myFile(fileName);		// Change this string to read another instace
+
+	if(!myFile){
+		return NULL;
+	}
+
 	myFile >> linha; 
 	myFile >> coluna;
 
 	//Jump the first matrix
 	for(int i=0; i<linha; i++){
 		for(int j=0; j<coluna; j++){
-			myFile >> dunkey;
+			myFile >> dummy;
 		}
 	}
 
@@ -76,37 +86,39 @@ template<typename T> T** readResource(int &linha, int &coluna){
 		}
 	}
 
-	cout << "A leitura dos recursos foi finalizada com sucesso...\n";
-
 	myFile.close();
 
 	return matriz;
 }
-template int** readResource<int>(int &linha, int &coluna);
-template double** readResource<double>(int &linha, int &coluna);
+template int** readResource<int>(const char *fileName, int &linha, int &coluna);
+template double** readResource<double>(const char *fileName, int &linha, int &coluna);
 
 
-template<typename T> T* readAgentsCap(int &linha, int &coluna){
+template<typename T> T* readAgentsCap(const char *fileName, int &linha, int &coluna){
 	
 	T *array;
-	T dunkey;
+	T dummy;
 
-	ifstream myFile("gap2-3.txt");		// Change this string to read another instace	
-	cout << "Lendo as capacidades dos agentes...\n";
+	ifstream myFile(fileName);		// Change this string to read another instace
+
+	if(!myFile){
+		return NULL;
+	}
+
 	myFile >> linha; 
 	myFile >> coluna;
 
 	//Jump the first matrix
 	for(int i=0; i<linha; i++){
 		for(int j=0; j<coluna; j++){
-			myFile >> dunkey;
+			myFile >> dummy;
 		}
 	}
 
 	//Jump the second matrix
 	for(int i=0; i<linha; i++){
 		for(int j=0; j<coluna; j++){
-			myFile >> dunkey;
+			myFile >> dummy;
 		}
 	}
 
@@ -115,11 +127,9 @@ template<typename T> T* readAgentsCap(int &linha, int &coluna){
 		myFile >>array[i];
 	}
 
-	cout << "A leitura das capacidades foi finalizada com sucesso...\n";
-
 	myFile.close();
 
 	return array;
 }
-template int* readAgentsCap<int>(int &linha, int &coluna);
-template double* readAgentsCap<double>(int &linha, int &coluna);
+template int* readAgentsCap<int>(const char *fileName, int &linha, int &coluna);
+template double* readAgentsCap<double>(const char *fileName, int &linha, int &coluna);
