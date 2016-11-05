@@ -99,27 +99,6 @@ private:
 	int colLimit(int strtTask);
 
 	/*
-		Soma os menores valores por coluna de '**profits' a p
-		artir de uma coluna 'strtTask'.
-
-		INPUT:	Coluna inicial.
-		OUTPUT:	Soma dos menores valores por coluna a partir 
-				de 'strttask'.
-	*/
-	int colMin(int strtTask);
-	
-	/*
-		Verifica a ordem de acesso dos agentes em ordem decres
-		cente dos custos benefícios('profit[i][j]/costs[i][j]')
-		para juma tarefa 'task'
-
-		INPUT:	Tarefa para a qual será calculada a ordem dos a
-				gentes.
-		OUTPUT:	Um fila contendo a ordem de acesso dos agentes.
-	*/
-	std::queue<int> orderOfAcces(int task);
-
-	/*
         Lê os dados contido no arquivo denome "fileName" e inic
         ializa os atributos do problema.
 
@@ -128,6 +107,16 @@ private:
 
 	*/
 	void readInstance(const char *fileName);
+
+	/*
+        Calcula uma solução inicial para a instância dada.
+        Adiciona os agentes que possuem o melhor custo-benefício
+        para uma determinada tarefa.
+
+        INPUT:   None
+        OUTPUT:  "Profit" calculado.
+
+	*/
 	int initialSolution();
 
 public:

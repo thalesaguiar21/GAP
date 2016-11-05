@@ -76,7 +76,8 @@ int GenAssign::initialSolution(){
 
 	for(int tsk=0; tsk<nTasks; tsk++){
 		for(int agt = 0; agt<nAgts; agt++){
-			if(actualCap(bTasks[tsk][agt]) + costs[bTasks[tsk][agt]][tsk] <= capacity[bTasks[tsk][agt]]){
+			if(actualCap(bTasks[tsk][agt]) + costs[bTasks[tsk][agt]][tsk] 
+				<= capacity[bTasks[tsk][agt]]){
 				assign[tsk] = bTasks[tsk][agt];
 				break;
 			}
@@ -98,27 +99,25 @@ void GenAssign::readInstance(const char *fileName){
 }
 
 void GenAssign::solve(){
-	std::cout << "\nSolving the given instance of GAP...\n";
 	maxProfit = initialSolution();
-
 	for(int tsk=0; tsk<nTasks; tsk++){
 		assign[tsk] = -1;
-		std::cout << colMaximum[tsk] << " ";
 	}
-	std::cout << "\n";
+	
+	std::cout << "\nSolving the given instance of GAP with "
+			  << "the initial solution: " << maxProfit << "\n";
+	
 	solve(0);
 }
 
 void GenAssign::solve(int task){
 	
-	if(task >= nTasks) std::cout << task << "º tarefa.\n";
 	int cProfit = 0;
 	int agt;
 
 	for(int agt = 0; agt < nAgts; agt++){
 		if(promising(agt, task)){
 			visitedNodes++;
-			assign[task] = agt;
 			if(task == nTasks-1){
 				cProfit = totalProfit();
 				if(cProfit > maxProfit){
@@ -134,19 +133,21 @@ void GenAssign::solve(int task){
 bool GenAssign::promising(int agt, int task){
 
 	bool isPromising = true;
-
-	if(actualCap(agt) + costs[agt][task] > capacity[agt]){
+	
+	if(assign[task] != -1){
 		isPromising = false;
-	}
-	if(isPromising && (assign[task] != -1)){
+	}else if(actualCap(agt) + costs[agt][task] > capacity[agt]){
 		isPromising = false;
-	}
+	}else
+		assign[task] = agt;
+	
 	if(isPromising && (task+1 < nTasks)){
 		if(totalProfit() + colMaximum[task+1] < maxProfit){
 			isPromising = false;
 		}	
 	}
 
+	if(!isPromising) assign[task] = -1;
 	return isPromising;
 }
 
@@ -188,22 +189,6 @@ int GenAssign::colLimit(int strtTask){
 	return total;
 }
 
-int GenAssign::colMin(int strtTask){
-
-	int minimum = 0;
-	int total = 0;
-	for(int task=strtTask; task<nTasks; task++){
-		minimum = profits[0][task];
-		for(int agt=1; agt<nAgts; agt++){
-			if(profits[agt][task] < minimum){
-				minimum = profits[agt][task];
-			}
-		}
-		total += minimum;
-	}
-	return  total;
-}
-
 void GenAssign::showAssign(){
 
 	std::cout << "(";
@@ -212,6 +197,7 @@ void GenAssign::showAssign(){
 	}
 	std::cout << ")\n";
 }
+
 // Getters
 int** GenAssign::getCosts(){
 	return this->costs;

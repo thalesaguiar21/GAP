@@ -27,10 +27,9 @@ template void printMat<double>(double **matriz, int linha, int coluna);
 
 	
 template<typename T> T** readCost(const char *fileName, int &linha, int &coluna){
-	
-	//cout << "Lendo o arquivo " << fileName << endl;
+
 	T **matriz;
-	ifstream myFile(fileName);		// Change this string to read another instace
+	ifstream myFile(fileName);
 
 	if(!myFile){
 		return NULL;
@@ -47,8 +46,6 @@ template<typename T> T** readCost(const char *fileName, int &linha, int &coluna)
 		}
 	}
 
-	//cout << "A leitura dos custos foi finalizada com sucesso...\n";
-
 	myFile.close();
 
 	return matriz;
@@ -62,7 +59,7 @@ template<typename T> T** readResource(const char *fileName, int &linha, int &col
 	T **matriz;
 	T dummy;
 
-	ifstream myFile(fileName);		// Change this string to read another instace
+	ifstream myFile(fileName);
 
 	if(!myFile){
 		return NULL;
@@ -99,7 +96,7 @@ template<typename T> T* readAgentsCap(const char *fileName, int &linha, int &col
 	T *array;
 	T dummy;
 
-	ifstream myFile(fileName);		// Change this string to read another instace
+	ifstream myFile(fileName);
 
 	if(!myFile){
 		return NULL;
