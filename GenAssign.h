@@ -128,6 +128,7 @@ private:
 
 	*/
 	void readInstance(const char *fileName);
+	int initialSolution();
 
 public:
 

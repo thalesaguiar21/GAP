@@ -32,12 +32,58 @@ GenAssign::~GenAssign(){
 	for(int i=0; i < nAgts; i++){
 		delete [] costs[i];
 	}
-
 	delete [] costs;
+
 
 	delete [] assign;
 
 	delete [] colMaximum;
+}
+
+int GenAssign::initialSolution(){
+	float costBenefit[nAgts][nTasks];
+	int bTasks[nTasks][nAgts];
+	float aux;
+	int iaux;
+	
+	for(int agt=0; agt<nAgts; agt++){
+		for(int tsk=0; tsk<nTasks; tsk++){
+			costBenefit[agt][tsk] = costs[agt][tsk] / (float)profits[agt][tsk];
+		}
+	}
+
+	for(int tsk=0; tsk<nTasks; tsk++){
+		for(int agt=0; agt<nAgts; agt++){
+			bTasks[tsk][agt] = agt;
+		}
+	}
+
+	for(int tsk=0; tsk<nTasks; tsk++){
+		for(int agt=0; agt<nAgts; agt++){
+			for(int agt2=0; agt2<nAgts; agt2++){
+				if(costBenefit[agt][tsk] < costBenefit[agt2][tsk]){
+					aux = costBenefit[agt][tsk];
+					costBenefit[agt][tsk] = costBenefit[agt2][tsk];
+					costBenefit[agt2][tsk] = aux;
+
+					iaux = bTasks[tsk][agt];
+					bTasks[tsk][agt] = bTasks[tsk][agt2];
+					bTasks[tsk][agt2] = iaux;
+				}
+			}
+		}
+	}
+
+	for(int tsk=0; tsk<nTasks; tsk++){
+		for(int agt = 0; agt<nAgts; agt++){
+			if(actualCap(bTasks[tsk][agt]) + costs[bTasks[tsk][agt]][tsk] <= capacity[bTasks[tsk][agt]]){
+				assign[tsk] = bTasks[tsk][agt];
+				break;
+			}
+		}
+	}
+
+	return totalProfit();
 }
 
 void GenAssign::readInstance(const char *fileName){
@@ -53,22 +99,27 @@ void GenAssign::readInstance(const char *fileName){
 
 void GenAssign::solve(){
 	std::cout << "\nSolving the given instance of GAP...\n";
+	maxProfit = initialSolution();
+
+	for(int tsk=0; tsk<nTasks; tsk++){
+		assign[tsk] = -1;
+		std::cout << colMaximum[tsk] << " ";
+	}
+	std::cout << "\n";
 	solve(0);
 }
 
 void GenAssign::solve(int task){
 	
+	if(task >= nTasks) std::cout << task << "º tarefa.\n";
 	int cProfit = 0;
 	int agt;
-	std::queue<int> order = orderOfAcces(task);
 
-	while(!order.empty()){
-		agt = order.front();
-		order.pop();
+	for(int agt = 0; agt < nAgts; agt++){
 		if(promising(agt, task)){
 			visitedNodes++;
 			assign[task] = agt;
-			if(task == nTasks){
+			if(task == nTasks-1){
 				cProfit = totalProfit();
 				if(cProfit > maxProfit){
 					maxProfit = cProfit;
@@ -90,8 +141,8 @@ bool GenAssign::promising(int agt, int task){
 	if(isPromising && (assign[task] != -1)){
 		isPromising = false;
 	}
-	if(isPromising && (task < nTasks)){
-		if(totalProfit() + colMaximum[task] < maxProfit){
+	if(isPromising && (task+1 < nTasks)){
+		if(totalProfit() + colMaximum[task+1] < maxProfit){
 			isPromising = false;
 		}	
 	}
@@ -137,36 +188,6 @@ int GenAssign::colLimit(int strtTask){
 	return total;
 }
 
-std::queue<int> GenAssign::orderOfAcces(int task){
-	std::queue<int> orderQ;
-	int order[nAgts];
-	int prof[nAgts];
-
-	for(int agt=0; agt<nAgts; agt++){
-		order[agt] = agt;
-		prof[agt] = profits[agt][task] /(float)costs[agt][task];
-	}
-
-	for(int i=0; i<nAgts; i++){
-		for(int j=i+1; j<nAgts; j++){
-			if(prof[j] > prof[i]){
-				int aux = order[i];
-				order[i] = order[j];
-				order[j] = aux;
-				aux = prof[i];
-				prof[i] = prof[j];
-				prof[j] = aux;
-			}
-		}
-	}
-
-	for(int i=0; i<nAgts; i++){
-		orderQ.push(order[i]);
-	}
-
-	return orderQ;
-}
-
 int GenAssign::colMin(int strtTask){
 
 	int minimum = 0;
@@ -191,7 +212,6 @@ void GenAssign::showAssign(){
 	}
 	std::cout << ")\n";
 }
-
 // Getters
 int** GenAssign::getCosts(){
 	return this->costs;
